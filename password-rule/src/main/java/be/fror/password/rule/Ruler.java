@@ -53,10 +53,10 @@ public final class Ruler {
    * Validates the password according to the defined rules and aggregates their result in a
    * <tt>{@link RuleResult}</tt>.
    *
-   * @param password the password to validate
+   * @param password the password to validatePassword
    * @return the result of the validation
    */
-  public RuleResult validate(final String password) {
+  public RuleResult validatePassword(final String password) {
     checkNotNull(password, "password must not be null");
     Password pwd = new Password(password);
     RuleResult.FailedResult failedResult = RuleResult.failed();

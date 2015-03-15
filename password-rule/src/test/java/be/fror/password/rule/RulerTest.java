@@ -60,7 +60,7 @@ public class RulerTest {
   }
 
   /**
-   * Test of validate method, of class Ruler.
+   * Test of validatePassword method, of class Ruler.
    */
   @Test
   public void testValidate() {
@@ -70,22 +70,22 @@ public class RulerTest {
     RuleResult result;
     ImmutableList<Failure> failures;
 
-    { // Verify that rule1.validate() is called.
+    { // Verify that rule1.validatePassword() is called.
       when(rule1.validate(any())).thenReturn(RuleResult.ok());
-      instance.validate("abc");
+      instance.validatePassword("abc");
       verify(rule1).validate(new Password("abc"));
     }
 
     { // A single rule, returning ok.
       when(rule1.validate(any())).thenReturn(RuleResult.ok());
-      result = instance.validate("abc");
+      result = instance.validatePassword("abc");
       assertThat(result.isValid(), is(true));
       assertThat(result.getFailures(), is(emptyCollectionOf(Failure.class)));
     }
 
     { // A single rule, failing
       when(rule1.validate(any())).thenReturn(RuleResult.failed("failed"));
-      result = instance.validate("abc");
+      result = instance.validatePassword("abc");
       failures = result.getFailures();
       Optional<Failure> failure = failures.stream().findFirst();
       assertThat(result.isValid(), is(false));

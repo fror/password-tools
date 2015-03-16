@@ -93,7 +93,7 @@ for (int i = 0; i < 10; i++) {
 }
 ```
 
-Here is one example of result:
+Here is one example of resulting passwords:
 
 ```
 VI72yNBeur

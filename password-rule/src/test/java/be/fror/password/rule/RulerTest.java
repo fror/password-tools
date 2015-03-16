@@ -89,7 +89,7 @@ public class RulerTest {
   public void testValidate() {
     Rule rule1 = mock(Rule.class);
 //    Rule rule2 = mock(Rule.class);
-    Ruler instance = Ruler.createRuler(ImmutableList.of(rule1));
+    Ruler instance = Ruler.createFromRules(ImmutableList.of(rule1));
     RuleResult result;
     ImmutableList<Failure> failures;
 
@@ -123,7 +123,7 @@ public class RulerTest {
    */
   @Test
   public void testGenerate() {
-    Ruler ruler = Ruler.createRuler(asList(
+    Ruler ruler = Ruler.createFromRules(asList(
         asciiLowercaseLetters(2),
         asciiUppercaseLetters(2),
         asciiDigits(2),

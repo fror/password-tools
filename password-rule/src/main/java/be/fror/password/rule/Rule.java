@@ -39,6 +39,9 @@ public interface Rule {
   /**
    * Validates a password according to the requirements of this rule.
    *
+   * <p>
+   * Implementations must never throw any exception.
+   * 
    * @param password
    * @return a <tt>RuleResult</tt> describing the result of the validation of the password by this
    * rule

@@ -46,7 +46,7 @@ public final class Ruler {
    * @param rules the rules to create the ruler with.
    * @return a new <tt>Ruler</tt> using each <tt>Rule</tt> of <tt>rules</tt>.
    */
-  public static Ruler createRuler(Iterable<Rule> rules) {
+  public static Ruler createFromRules(Iterable<Rule> rules) {
     return new Builder().addRules(rules).build();
   }
 

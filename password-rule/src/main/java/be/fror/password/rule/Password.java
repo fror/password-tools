@@ -27,11 +27,19 @@ public final class Password {
 
   private final String password;
 
+  /**
+   * 
+   * @param password 
+   */
   public Password(final String password) {
     checkNotNull(password);
     this.password = password;
   }
 
+  /**
+   * 
+   * @return 
+   */
   public String getPassword() {
     return password;
   }

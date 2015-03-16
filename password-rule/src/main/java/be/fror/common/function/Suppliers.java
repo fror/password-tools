@@ -20,6 +20,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.io.Serializable;
 import java.util.function.Supplier;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
  *
  * @author Olivier Grégoire &lt;fror@users.noreply.github.com&gt;
@@ -29,12 +31,37 @@ public final class Suppliers {
   private Suppliers() {
   }
 
+  /**
+   * Returns a supplier which caches the instance retrieved during the first call to <tt>get()</tt>
+   * and returns that value on subsequent calls to <tt>get()</tt>.
+   *
+   * <p>
+   * The returned supplier is thread-safe. The supplier's serialized form does not contain the
+   * cached value, which will be recalculated when <tt>get()</tt> is called on the reserialized
+   * instance.
+   *
+   * <p>
+   * If <tt>delegate</tt> is an instance created by an earlier call to <tt>memoize</tt>, it is
+   * returned directly.
+   *
+   * <p>
+   * This method is a direct port of Guava's
+   * {@link com.google.common.base.Suppliers#memoize(com.google.common.base.Supplier) Suppliers::memoize()}
+   * to Java 8's <tt>Supplier</tt>.
+   *
+   * @param <T> The type of the object to memoize
+   * @param delegate The supplier to memoize
+   * @return a new instance of a memoizing supplier, or <tt>delegate</tt> if it is already the
+   * result of a call to this method
+   * @see <a href="http://en.wikipedia.org/wiki/Memoization">memoization</a> on Wikipedia
+   */
   public static <T> Supplier<T> memoize(Supplier<T> delegate) {
     return (delegate instanceof MemoizingSupplier)
         ? delegate
         : new MemoizingSupplier<>(checkNotNull(delegate));
   }
 
+  @ThreadSafe
   static class MemoizingSupplier<T> implements Supplier<T>, Serializable {
 
     private static final long serialVersionUID = 0;
@@ -49,17 +76,18 @@ public final class Suppliers {
 
     @Override
     public T get() {
-      if (!this.initialized) {
+      // A 2-field variant of Double Checked Locking.
+      if (!initialized) {
         synchronized (this) {
-          if (!this.initialized) {
-            T t = this.delegate.get();
-            this.value = t;
-            this.initialized = true;
+          if (!initialized) {
+            T t = delegate.get();
+            value = t;
+            initialized = true;
             return t;
           }
         }
       }
-      return this.value;
+      return value;
     }
   }
 }

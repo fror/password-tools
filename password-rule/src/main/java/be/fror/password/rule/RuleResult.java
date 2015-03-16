@@ -56,28 +56,70 @@ public abstract class RuleResult {
     return OkResult.INSTANCE;
   }
 
+  /**
+   *
+   * @return
+   */
   public static FailedResult failed() {
     return new FailedResult();
   }
 
+  /**
+   *
+   * @param reason
+   * @return
+   */
   public static FailedResult failed(final String reason) {
     return new FailedResult().addFailure(reason);
   }
 
+  /**
+   * 
+   * @param reason
+   * @param key
+   * @param value
+   * @return 
+   */
   public static FailedResult failed(final String reason, final String key, final Object value) {
     return new FailedResult().addFailure(reason, key, value);
   }
 
+  /**
+   * 
+   * @param reason
+   * @param key1
+   * @param value1
+   * @param key2
+   * @param value2
+   * @return 
+   */
   public static FailedResult failed(final String reason, final String key1, final Object value1,
       final String key2, final Object value2) {
     return new FailedResult().addFailure(reason, key1, value1, key2, value2);
   }
 
+  /**
+   * 
+   * @param reason
+   * @param key1
+   * @param value1
+   * @param key2
+   * @param value2
+   * @param key3
+   * @param value3
+   * @return 
+   */
   public static FailedResult failed(final String reason, final String key1, final Object value1,
       final String key2, final Object value2, final String key3, final Object value3) {
     return new FailedResult().addFailure(reason, key1, value1, key2, value2, key3, value3);
   }
 
+  /**
+   * 
+   * @param reason
+   * @param parameters
+   * @return 
+   */
   public static FailedResult failed(final String reason, final Map<String, Object> parameters) {
     return new FailedResult().addFailure(reason, parameters);
   }
@@ -118,6 +160,9 @@ public abstract class RuleResult {
 
   }
 
+  /**
+   * Class visible for building and chaining reasons
+   */
   public static final class FailedResult extends RuleResult {
 
     private final List<Failure> failures;
@@ -136,24 +181,62 @@ public abstract class RuleResult {
       return ImmutableList.copyOf(failures);
     }
 
+    /**
+     * 
+     * @param reason
+     * @return 
+     */
     public FailedResult addFailure(final String reason) {
       return this.addFailure(reason, ImmutableMap.of());
     }
 
+    /**
+     * 
+     * @param reason
+     * @param key
+     * @param value
+     * @return 
+     */
     public FailedResult addFailure(final String reason, final String key, final Object value) {
       return this.addFailure(reason, ImmutableMap.of(key, value));
     }
 
+    /**
+     * 
+     * @param reason
+     * @param key1
+     * @param value1
+     * @param key2
+     * @param value2
+     * @return 
+     */
     public FailedResult addFailure(final String reason, final String key1, final Object value1,
         final String key2, final Object value2) {
       return this.addFailure(reason, ImmutableMap.of(key1, value1, key2, value2));
     }
 
+    /**
+     * 
+     * @param reason
+     * @param key1
+     * @param value1
+     * @param key2
+     * @param value2
+     * @param key3
+     * @param value3
+     * @return 
+     */
     public FailedResult addFailure(final String reason, final String key1, final Object value1,
         final String key2, final Object value2, final String key3, final Object value3) {
       return this.addFailure(reason, ImmutableMap.of(key1, value1, key2, value2, key3, value3));
     }
 
+    /**
+     * 
+     * @param reason
+     * @param parameters
+     * @return 
+     */
     public FailedResult addFailure(final String reason, final Map<String, Object> parameters) {
       this.failures.add(new Failure(reason, ImmutableMap.copyOf(parameters)));
       return this;

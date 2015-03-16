@@ -30,11 +30,19 @@ import static be.fror.password.rule.RuleConstants.ASCII_UPPERCASE_LETTER_MATCHER
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
+ * 
  *
  * @author Olivier Grégoire &lt;fror@users.noreply.github.com&gt;
  */
 public interface Rule {
 
+  /**
+   * Validates a password according to the requirements of this rule.
+   *
+   * @param password
+   * @return a <tt>RuleResult</tt> describing the result of the validation of the password by this
+   * rule
+   */
   public RuleResult validate(final Password password);
 
   /**
@@ -111,6 +119,11 @@ public interface Rule {
     return StandardRules.NO_WHITESPACE;
   }
 
+  /**
+   * 
+   * @param numberOfCharacters
+   * @return 
+   */
   public static CharacterRule asciiUppercaseLetters(int numberOfCharacters) {
     checkArgument(numberOfCharacters > 0, "numberOfCharacters must be greater than 0");
     return new DefaultCharacterRule(
@@ -120,6 +133,11 @@ public interface Rule {
         "characters.asciiUppercaseLetters");
   }
 
+  /**
+   * 
+   * @param numberOfCharacters
+   * @return 
+   */
   public static CharacterRule asciiLowercaseLetters(int numberOfCharacters) {
     checkArgument(numberOfCharacters > 0, "numberOfCharacters must be greater than 0");
     return new DefaultCharacterRule(
@@ -129,6 +147,11 @@ public interface Rule {
         "characters.asciiLowercaseLetters");
   }
 
+  /**
+   * 
+   * @param numberOfCharacters
+   * @return 
+   */
   public static CharacterRule asciiLetters(int numberOfCharacters) {
     checkArgument(numberOfCharacters > 0, "numberOfCharacters must be greater than 0");
     return new DefaultCharacterRule(
@@ -138,6 +161,11 @@ public interface Rule {
         "characters.asciiLetters");
   }
 
+  /**
+   * 
+   * @param numberOfCharacters
+   * @return 
+   */
   public static CharacterRule asciiDigits(int numberOfCharacters) {
     checkArgument(numberOfCharacters > 0, "numberOfCharacters must be greater than 0");
     return new DefaultCharacterRule(
@@ -147,6 +175,11 @@ public interface Rule {
         "characters.asciiDigits");
   }
 
+  /**
+   * 
+   * @param numberOfCharacters
+   * @return 
+   */
   public static CharacterRule asciiAlphanumeric(int numberOfCharacters) {
     checkArgument(numberOfCharacters > 0, "numberOfCharacters must be greater than 0");
     return new DefaultCharacterRule(
@@ -156,6 +189,11 @@ public interface Rule {
         "characters.asciiAlphanumeric");
   }
 
+  /**
+   * 
+   * @param numberOfCharacters
+   * @return 
+   */
   public static CharacterRule asciiSymbols(int numberOfCharacters) {
     checkArgument(numberOfCharacters > 0, "numberOfCharacters must be greater than 0");
     return new DefaultCharacterRule(

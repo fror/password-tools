@@ -24,11 +24,20 @@ import java.util.stream.Collector;
  *
  * @author Olivier Grégoire &lt;fror@users.noreply.github.com&gt;
  */
-public class MoreCollectors {
+public final class MoreCollectors {
 
   private MoreCollectors() {
   }
 
+  /**
+   * Returns a <tt>Collector</tt> that accumulates the input elements into a new
+   * <tt>ImmutableList</tt>. The returned <tt>ImmutableList</tt> is guaranteed to be immutable,
+   * serializable and thread-safe.
+   *
+   * @param <T> the type of the input elements
+   * @return a Collector which collects all the input elements into a ImmutableList, in encounter
+   * order
+   */
   public static <T> Collector<T, ImmutableList.Builder<T>, ImmutableList<T>> toImmutableList() {
     return Collector.of(
         ImmutableList.Builder::new,
@@ -38,6 +47,15 @@ public class MoreCollectors {
     );
   }
 
+  /**
+   * Returns a <tt>Collector</tt> that accumulates the input elements into a new
+   * <tt>ImmutableSet</tt>. The returned <tt>ImmutableSet</tt> is guaranteed to be immutable,
+   * serializable and thread-safe.
+   *
+   * @param <T> the type of the input elements
+   * @return a Collector which collects all the input elements into a ImmutableSet, in encounter
+   * order
+   */
   public static <T> Collector<T, ImmutableSet.Builder<T>, ImmutableSet<T>> toImmutableSet() {
     return Collector.of(
         ImmutableSet.Builder::new,

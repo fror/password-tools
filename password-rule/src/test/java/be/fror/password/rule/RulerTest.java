@@ -48,21 +48,36 @@ public class RulerTest {
 
   private static final Random RANDOM = new Random();
 
+  /**
+   * Instantiates a new <tt>RulerTest</tt> instance.
+   */
   public RulerTest() {
   }
 
+  /**
+   * Hook to execute before executing all the tests written in this class
+   */
   @BeforeClass
   public static void setUpClass() {
   }
 
+  /**
+   * Hook to execute after executing all the tests written in this class
+   */
   @AfterClass
   public static void tearDownClass() {
   }
 
+  /**
+   * Hook to execute after creating this test instance and before executing a test method.
+   */
   @Before
   public void setUp() {
   }
 
+  /**
+   * Hook to execute before destroying this test instance, but after executing a test method
+   */
   @After
   public void tearDown() {
   }
@@ -73,7 +88,7 @@ public class RulerTest {
   @Test
   public void testValidate() {
     Rule rule1 = mock(Rule.class);
-    Rule rule2 = mock(Rule.class);
+//    Rule rule2 = mock(Rule.class);
     Ruler instance = Ruler.createRuler(ImmutableList.of(rule1));
     RuleResult result;
     ImmutableList<Failure> failures;
@@ -103,6 +118,9 @@ public class RulerTest {
     }
   }
 
+  /**
+   * Tests the generation of passwords
+   */
   @Test
   public void testGenerate() {
     Ruler ruler = Ruler.createRuler(asList(
@@ -113,7 +131,7 @@ public class RulerTest {
     ));
 
     for (int i = 0; i < 100; i++) { // Arbitrary number of tests
-      String password = ruler.generatePassword(8, RANDOM);
+      String password = ruler.generatePassword(25, RANDOM);
       assertThat(ruler.validatePassword(password), is(RuleResult.ok()));
     }
   }

@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.annotation.concurrent.ThreadSafe;
 
@@ -36,10 +37,11 @@ import javax.annotation.concurrent.ThreadSafe;
  * @author Olivier Grégoire &lt;fror@users.noreply.github.com&gt;
  */
 @ThreadSafe
+@Immutable
 public final class Ruler {
 
   /**
-   * Creates a new <tt>Ruler</tt> with all the rules given as parameters.
+   * Factory method to easily create a new <tt>Ruler</tt> with all the rules given as parameter.
    *
    * @param rules the rules to create the ruler with.
    * @return a new <tt>Ruler</tt> using each <tt>Rule</tt> of <tt>rules</tt>.
@@ -89,24 +91,35 @@ public final class Ruler {
     }
   }
 
+  /**
+   * Generates a password of length <tt>length</tt> using <tt>random</tt>.
+   *
+   * @param length the length of the password to generate
+   * @param random the random number generator to use to generate the password
+   * @return A password valid according the provided character rules.
+   * @throws IllegalArgumentException if <tt>length &lt;= 0</tt>
+   * @throws IllegalStateException if no <tt>CharacterRule</tt> were provided when creating this
+   * ruler.
+   */
   public String generatePassword(final int length, final Random random) {
     checkArgument(length > 0, "length must greater than 0");
     checkNotNull(random, "random must not be null");
-    Collection<CharacterRule> charRules = this.characterRules.get();
-    checkState(charRules.size() > 0, "No CharacterRule exist in this Ruler");
-    final StringBuilder allCharacters = new StringBuilder();
+    final Collection<CharacterRule> charRules = this.characterRules.get();
+    checkState(charRules.size() > 0, "No CharacterRule were added to this Ruler");
+    final StringBuilder allChars = new StringBuilder();
     final StringBuilder builder = new StringBuilder();
     charRules.stream().forEach((rule) -> {
       final String source = rule.getValidCharacters();
-      allCharacters.append(source);
+      allChars.append(source);
       for (int i = 0, l = rule.getNumberOfCharacters(); i < l; i++) {
         builder.append(source.charAt(random.nextInt(source.length())));
       }
     });
     for (int i = builder.length(); i < length; i++) {
-      builder.append(allCharacters.charAt(random.nextInt(allCharacters.length())));
+      builder.append(allChars.charAt(random.nextInt(allChars.length())));
     }
-    for (int i = 0; i < builder.length(); i++) {
+    for (int i = 0, len = builder.length() - 1; i < len; i++) {
+      // length - 1 because the last call would always be switching the last character with itself.
       int pos = i + random.nextInt(builder.length() - i);
       char c = builder.charAt(pos);
       builder.setCharAt(pos, builder.charAt(i));
@@ -122,7 +135,8 @@ public final class Ruler {
    * The rules of the <tt>Ruler</tt> are ordered in the order they were added in this Builder.
    *
    * <p>
-   * The methods are chained, meaning that it is possible to create a <tt>Ruler</tt> like this:
+   * The methods are chained, meaning that it is possible to create a
+   * <tt>Ruler</tt> like this:
    *
    * <pre><code>
    * Ruler ruler = new Ruler.Builder()
@@ -138,7 +152,7 @@ public final class Ruler {
     private final ImmutableSet.Builder<Rule> rules = ImmutableSet.builder();
 
     /**
-     * Instanciates a new <tt>Rule</tt> builder.
+     * Instantiates a new <tt>Rule</tt> builder.
      */
     public Builder() {
     }
@@ -177,7 +191,8 @@ public final class Ruler {
     }
 
     /**
-     * Creates a new <tt>Ruler</tt> with all the rules that were add to <tt>this</tt>.
+     * Creates a new <tt>Ruler</tt> with all the rules that were add to
+     * <tt>this</tt>.
      *
      * @return a new ruler containing the rules
      * @throws IllegalStateException if no rule were added to <tt>this</tt>.

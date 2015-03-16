@@ -38,6 +38,6 @@ class RuleConstants {
   static final String ASCII_ALPHANUMERIC_CHARACTERS = ASCII_LETTER_CHARACTERS + ASCII_DIGIT_CHARACTERS;
   static final AsciiCharMatcher ASCII_ALPHANUMERIC_MATCHER = ASCII_LETTER_MATCHER.or(ASCII_DIGIT_MATCHER);
 
-  static final String ASCII_SYMBOL_CHARACTERS = ",.;:?!+-*/=[](){}_@&\"`$#%^~|<>\\";
+  static final String ASCII_SYMBOL_CHARACTERS = ",.;:?!+-*/=[](){}_@&\"'`$#%^~|<>\\";
   static final AsciiCharMatcher ASCII_SYMBOL_MATCHER = anyOfAscii(ASCII_SYMBOL_CHARACTERS);
 }

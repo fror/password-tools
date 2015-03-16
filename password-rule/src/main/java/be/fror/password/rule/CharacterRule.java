@@ -15,33 +15,14 @@
  */
 package be.fror.password.rule;
 
-import static be.fror.password.rule.RuleResult.failed;
-import static be.fror.password.rule.RuleResult.ok;
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import com.google.common.base.CharMatcher;
-
 /**
  *
  * @author Olivier Grégoire &lt;fror@users.noreply.github.com&gt;
  */
-class StandardRules {
+public interface CharacterRule extends Rule {
 
-  static final Rule NO_WHITESPACE = new Rule() {
-    @Override
-    public RuleResult validate(final Password password) {
-      checkNotNull(password, "password must not be null");
-      if (CharMatcher.WHITESPACE.matchesNoneOf(password.getPassword())) {
-        return ok();
-      } else {
-        return failed("noWhitespace");
-      }
-    }
+  public String getValidCharacters();
 
-    @Override
-    public String toString() {
-      return "noWhitespace()";
-    }
-  };
+  public int getNumberOfCharacters();
 
 }

@@ -25,6 +25,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -32,13 +33,17 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.Random;
 
 /**
  *
  * @author Olivier Grégoire &lt;fror@users.noreply.github.com&gt;
  */
 public class RulerTest {
+
+  private static final Random RANDOM = new Random();
 
   public RulerTest() {
   }
@@ -92,6 +97,21 @@ public class RulerTest {
       assertThat(failures, hasSize(1));
       assertThat(failure.get().getReason(), is(equalTo("failed")));
       assertThat(failure.get().getParameters().size(), is(0));
+    }
+  }
+
+  @Test
+  public void testGenerate() {
+    Ruler ruler = Ruler.createRuler(Arrays.asList(
+        Rule.asciiLowercaseLetters(1),
+        Rule.asciiUppercaseLetters(1),
+        Rule.asciiDigits(1),
+        Rule.asciiSymbols(1)
+    ));
+
+    for (int i = 0; i < 20; i++) {
+      String password = ruler.generatePassword(8, RANDOM);
+      assertThat(ruler.validatePassword(password), is(RuleResult.ok()));
     }
   }
 

@@ -16,6 +16,7 @@
 package be.fror.password.rule;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static be.fror.password.rule.RuleConstants.*;
 
 /**
  *
@@ -99,4 +100,57 @@ public interface Rule {
     return StandardRules.NO_WHITESPACE;
   }
 
+  public static CharacterRule asciiUppercaseLetters(int numberOfCharacters) {
+    checkArgument(numberOfCharacters > 0, "numberOfCharacters must be greater than 0");
+    return new DefaultCharacterRule(
+        ASCII_UPPERCASE_LETTER_CHARACTERS,
+        ASCII_UPPERCASE_LETTER_MATCHER,
+        numberOfCharacters,
+        "characters.asciiUppercaseLetters");
+  }
+
+  public static CharacterRule asciiLowercaseLetters(int numberOfCharacters) {
+    checkArgument(numberOfCharacters > 0, "numberOfCharacters must be greater than 0");
+    return new DefaultCharacterRule(
+        ASCII_LOWERCASE_LETTER_CHARACTERS,
+        ASCII_LOWERCASE_LETTER_MATCHER,
+        numberOfCharacters,
+        "characters.asciiLowercaseLetters");
+  }
+
+  public static CharacterRule asciiLetters(int numberOfCharacters) {
+    checkArgument(numberOfCharacters > 0, "numberOfCharacters must be greater than 0");
+    return new DefaultCharacterRule(
+        ASCII_LETTER_CHARACTERS,
+        ASCII_LETTER_MATCHER,
+        numberOfCharacters,
+        "characters.asciiLetters");
+  }
+
+  public static CharacterRule asciiDigits(int numberOfCharacters) {
+    checkArgument(numberOfCharacters > 0, "numberOfCharacters must be greater than 0");
+    return new DefaultCharacterRule(
+        ASCII_DIGIT_CHARACTERS,
+        ASCII_DIGIT_MATCHER,
+        numberOfCharacters,
+        "characters.asciiDigits");
+  }
+
+  public static CharacterRule asciiAlphanumeric(int numberOfCharacters) {
+    checkArgument(numberOfCharacters > 0, "numberOfCharacters must be greater than 0");
+    return new DefaultCharacterRule(
+        ASCII_ALPHANUMERIC_CHARACTERS,
+        ASCII_ALPHANUMERIC_MATCHER,
+        numberOfCharacters,
+        "characters.asciiAlphanumeric");
+  }
+
+  public static CharacterRule asciiSymbols(int numberOfCharacters) {
+    checkArgument(numberOfCharacters > 0, "numberOfCharacters must be greater than 0");
+    return new DefaultCharacterRule(
+        ASCII_SYMBOL_CHARACTERS,
+        ASCII_SYMBOL_MATCHER,
+        numberOfCharacters,
+        "characters.asciiSymbols");
+  }
 }

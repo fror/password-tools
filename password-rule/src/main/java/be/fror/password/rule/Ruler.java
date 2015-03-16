@@ -15,11 +15,19 @@
  */
 package be.fror.password.rule;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
+import static be.fror.common.function.MoreCollectors.*;
+import static be.fror.common.function.Suppliers.*;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
+
+import java.util.Collection;
+import java.util.Random;
+import java.util.function.Supplier;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.annotation.concurrent.ThreadSafe;
@@ -44,9 +52,16 @@ public final class Ruler {
   @VisibleForTesting
   final ImmutableSet<Rule> rules;
 
+  private final Supplier<ImmutableSet<CharacterRule>> characterRules;
+
   @VisibleForTesting
   Ruler(Builder builder) {
     this.rules = builder.rules.build();
+    this.characterRules = memoize(() -> rules.stream()
+        .filter((e) -> e instanceof CharacterRule)
+        .map((e) -> (CharacterRule) e)
+        .collect(toImmutableSet())
+    );
   }
 
   /**
@@ -58,11 +73,11 @@ public final class Ruler {
    */
   public RuleResult validatePassword(final String password) {
     checkNotNull(password, "password must not be null");
-    Password pwd = new Password(password);
-    RuleResult.FailedResult failedResult = RuleResult.failed();
+    final Password pwd = new Password(password);
+    final RuleResult.FailedResult failedResult = RuleResult.failed();
     boolean failed = false;
     for (Rule rule : this.rules) {
-      RuleResult result = rule.validate(pwd);
+      final RuleResult result = rule.validate(pwd);
       if (!result.isValid()) {
         failed = true;
         failedResult.addFailures(result.getFailures());
@@ -73,6 +88,32 @@ public final class Ruler {
     } else {
       return RuleResult.ok();
     }
+  }
+
+  public String generatePassword(final int length, final Random random) {
+    checkArgument(length > 0, "length must greater than 0");
+    checkNotNull(random, "random must not be null");
+    Collection<CharacterRule> charRules = this.characterRules.get();
+    checkState(charRules.size() > 0, "No CharacterRule exist in this Ruler");
+    final StringBuilder allCharacters = new StringBuilder();
+    final StringBuilder builder = new StringBuilder();
+    charRules.stream().forEach((rule) -> {
+      final String source = rule.getValidCharacters();
+      allCharacters.append(source);
+      for (int i = 0, l = rule.getNumberOfCharacters(); i < l; i++) {
+        builder.append(source.charAt(random.nextInt(source.length())));
+      }
+    });
+    for (int i = builder.length(); i < length; i++) {
+      builder.append(allCharacters.charAt(random.nextInt(allCharacters.length())));
+    }
+    for (int i = 0; i < builder.length(); i++) {
+      int pos = i + random.nextInt(builder.length() - i);
+      char c = builder.charAt(pos);
+      builder.setCharAt(pos, builder.charAt(i));
+      builder.setCharAt(i, c);
+    }
+    return builder.toString();
   }
 
   /**

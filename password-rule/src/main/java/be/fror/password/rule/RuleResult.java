@@ -15,12 +15,14 @@
  */
 package be.fror.password.rule;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  *
@@ -51,7 +53,7 @@ public abstract class RuleResult {
    * <tt>List</tt> to <tt>getFailures()</tt>
    */
   public static RuleResult ok() {
-    return Ok.INSTANCE;
+    return OkResult.INSTANCE;
   }
 
   public static FailedResult failed() {
@@ -80,13 +82,13 @@ public abstract class RuleResult {
     return new FailedResult().addFailure(reason, parameters);
   }
 
-  private static final class Ok extends RuleResult {
+  private static final class OkResult extends RuleResult {
 
-    private static final RuleResult INSTANCE = new Ok();
+    private static final RuleResult INSTANCE = new OkResult();
 
     private static final ImmutableList<Failure> EMPTY_FAILURES = ImmutableList.of();
 
-    private Ok() {
+    private OkResult() {
     }
 
     @Override
@@ -97,6 +99,21 @@ public abstract class RuleResult {
     @Override
     public ImmutableList<Failure> getFailures() {
       return EMPTY_FAILURES;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      return obj instanceof OkResult;
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(OkResult.class);
+    }
+
+    @Override
+    public String toString() {
+      return "RuleResult.ok()";
     }
 
   }
@@ -146,5 +163,25 @@ public abstract class RuleResult {
       this.failures.addAll(failures);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == null || this.getClass() != obj.getClass()) {
+        return false;
+      }
+      FailedResult other = (FailedResult) obj;
+      return Objects.equals(this.failures, other.failures);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(FailedResult.class, this.failures);
+    }
+
+    @Override
+    public String toString() {
+      return MoreObjects.toStringHelper("RuleResult.failed()")
+          .addValue(this.failures)
+          .toString();
+    }
   }
 }

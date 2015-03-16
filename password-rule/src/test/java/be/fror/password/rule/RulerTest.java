@@ -15,6 +15,11 @@
  */
 package be.fror.password.rule;
 
+import static be.fror.password.rule.Rule.asciiDigits;
+import static be.fror.password.rule.Rule.asciiLowercaseLetters;
+import static be.fror.password.rule.Rule.asciiSymbols;
+import static be.fror.password.rule.Rule.asciiUppercaseLetters;
+import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.emptyCollectionOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -25,7 +30,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -33,7 +37,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.Random;
 
@@ -102,14 +105,14 @@ public class RulerTest {
 
   @Test
   public void testGenerate() {
-    Ruler ruler = Ruler.createRuler(Arrays.asList(
-        Rule.asciiLowercaseLetters(1),
-        Rule.asciiUppercaseLetters(1),
-        Rule.asciiDigits(1),
-        Rule.asciiSymbols(1)
+    Ruler ruler = Ruler.createRuler(asList(
+        asciiLowercaseLetters(2),
+        asciiUppercaseLetters(2),
+        asciiDigits(2),
+        asciiSymbols(2)
     ));
 
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 100; i++) { // Arbitrary number of tests
       String password = ruler.generatePassword(8, RANDOM);
       assertThat(ruler.validatePassword(password), is(RuleResult.ok()));
     }

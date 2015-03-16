@@ -15,6 +15,8 @@
  */
 package be.fror.password.rule;
 
+import static be.fror.password.rule.RuleResult.failed;
+import static be.fror.password.rule.RuleResult.ok;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -37,11 +39,11 @@ class LengthRule implements Rule {
     String pwd = password.getPassword();
     int length = pwd.length();
     if (length < this.minimumLength) {
-      return RuleResult.failed("length.tooShort", "minimumLength", this.minimumLength);
+      return failed("length.tooShort", "minimumLength", this.minimumLength);
     } else if (length > this.maximumLength) {
-      return RuleResult.failed("length.tooLong", "maximumLength", this.maximumLength);
+      return failed("length.tooLong", "maximumLength", this.maximumLength);
     } else {
-      return RuleResult.ok();
+      return ok();
     }
   }
 

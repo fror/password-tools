@@ -15,7 +15,7 @@
  */
 package be.fror.common.function;
 
-import com.google.common.base.Preconditions;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
 import java.util.function.Supplier;
@@ -32,7 +32,7 @@ public final class Suppliers {
   public static <T> Supplier<T> memoize(Supplier<T> delegate) {
     return (delegate instanceof MemoizingSupplier)
         ? delegate
-        : new MemoizingSupplier<>(Preconditions.checkNotNull(delegate));
+        : new MemoizingSupplier<>(checkNotNull(delegate));
   }
 
   static class MemoizingSupplier<T> implements Supplier<T>, Serializable {

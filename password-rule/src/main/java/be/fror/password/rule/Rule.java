@@ -15,8 +15,19 @@
  */
 package be.fror.password.rule;
 
+import static be.fror.password.rule.RuleConstants.ASCII_ALPHANUMERIC_CHARACTERS;
+import static be.fror.password.rule.RuleConstants.ASCII_ALPHANUMERIC_MATCHER;
+import static be.fror.password.rule.RuleConstants.ASCII_DIGIT_CHARACTERS;
+import static be.fror.password.rule.RuleConstants.ASCII_DIGIT_MATCHER;
+import static be.fror.password.rule.RuleConstants.ASCII_LETTER_CHARACTERS;
+import static be.fror.password.rule.RuleConstants.ASCII_LETTER_MATCHER;
+import static be.fror.password.rule.RuleConstants.ASCII_LOWERCASE_LETTER_CHARACTERS;
+import static be.fror.password.rule.RuleConstants.ASCII_LOWERCASE_LETTER_MATCHER;
+import static be.fror.password.rule.RuleConstants.ASCII_SYMBOL_CHARACTERS;
+import static be.fror.password.rule.RuleConstants.ASCII_SYMBOL_MATCHER;
+import static be.fror.password.rule.RuleConstants.ASCII_UPPERCASE_LETTER_CHARACTERS;
+import static be.fror.password.rule.RuleConstants.ASCII_UPPERCASE_LETTER_MATCHER;
 import static com.google.common.base.Preconditions.checkArgument;
-import static be.fror.password.rule.RuleConstants.*;
 
 /**
  *

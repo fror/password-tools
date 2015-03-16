@@ -15,12 +15,11 @@
  */
 package be.fror.password.rule;
 
+import static be.fror.common.function.MoreCollectors.toImmutableSet;
+import static be.fror.common.function.Suppliers.memoize;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
-
-import static be.fror.common.function.MoreCollectors.*;
-import static be.fror.common.function.Suppliers.*;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;

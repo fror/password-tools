@@ -113,7 +113,7 @@ public class RulerTest {
       Optional<Failure> failure = failures.stream().findFirst();
       assertThat(result.isValid(), is(false));
       assertThat(failures, hasSize(1));
-      assertThat(failure.get().getReason(), is(equalTo("failed")));
+      assertThat(failure.get().getErrorCode(), is(equalTo("failed")));
       assertThat(failure.get().getParameters().size(), is(0));
     }
   }

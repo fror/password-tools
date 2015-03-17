@@ -50,7 +50,7 @@ public interface Rule {
 
   /**
    * <p>
-   * If not validated, this <tt>Rule</tt> can generate the following two reasons:
+   * If not validated, this <tt>Rule</tt> can generate the following two error codes:
    *
    * <ul>
    * <li><tt>"length.tooShort"</tt> with the parameter <tt>"minimumLength"</tt>;</li>
@@ -70,15 +70,15 @@ public interface Rule {
    * Both values are inclusive.
    *
    * <p>
-   * If not validated, this <tt>Rule</tt> can generate the two following reasons:
+   * If not validated, this <tt>Rule</tt> can generate the two following error codes:
    *
    * <ul>
    * <li><tt>"length.tooShort"</tt> with the parameter <tt>"minimumLength"</tt>;</li>
    * <li><tt>"length.tooLong"</tt> with the parameter <tt>"maximumLength"</tt>.</li>
    * </ul>
    *
-   * @param minimumLength the minimum password length accepted by this <tt>Rule</tt>
-   * @param maximumLength the maximum password length accepted by this <tt>Rule</tt>
+   * @param minimumLength the minimum password length accepted by this <tt>Rule</tt>, inclusive.
+   * @param maximumLength the maximum password length accepted by this <tt>Rule</tt>, inclusive.
    * @return a <tt>Rule</tt> for passwords, based on their length.
    * @throws IllegalArgumentException if <tt>minimumLength &lt; 0</tt> or if <tt>minimumLength &gt;=
    * maximumLength</tt>
@@ -91,7 +91,7 @@ public interface Rule {
   /**
    *
    * <p>
-   * If not validated, this <tt>Rule</tt> can generate the following reason:
+   * If not validated, this <tt>Rule</tt> can generate the following error code:
    *
    * <ul>
    * <li><tt>"length.tooShort"</tt> with the parameter <tt>"minimumLength"</tt>.</li>
@@ -110,7 +110,7 @@ public interface Rule {
    *
    *
    * <p>
-   * If not validated, this <tt>Rule</tt> can generate the following reason:
+   * If not validated, this <tt>Rule</tt> can generate the following error code:
    *
    * <ul>
    * <li><tt>"noWhitespace"</tt> without any parameters.</li>

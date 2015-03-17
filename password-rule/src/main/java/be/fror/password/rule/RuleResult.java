@@ -66,41 +66,41 @@ public abstract class RuleResult {
 
   /**
    *
-   * @param reason
+   * @param errorCode
    * @return
    */
-  public static FailedResult failed(final String reason) {
-    return new FailedResult().addFailure(reason);
+  public static FailedResult failed(final String errorCode) {
+    return new FailedResult().addFailure(errorCode);
   }
 
   /**
    * 
-   * @param reason
+   * @param errorCode
    * @param key
    * @param value
    * @return 
    */
-  public static FailedResult failed(final String reason, final String key, final Object value) {
-    return new FailedResult().addFailure(reason, key, value);
+  public static FailedResult failed(final String errorCode, final String key, final Object value) {
+    return new FailedResult().addFailure(errorCode, key, value);
   }
 
   /**
    * 
-   * @param reason
+   * @param errorCode
    * @param key1
    * @param value1
    * @param key2
    * @param value2
    * @return 
    */
-  public static FailedResult failed(final String reason, final String key1, final Object value1,
+  public static FailedResult failed(final String errorCode, final String key1, final Object value1,
       final String key2, final Object value2) {
-    return new FailedResult().addFailure(reason, key1, value1, key2, value2);
+    return new FailedResult().addFailure(errorCode, key1, value1, key2, value2);
   }
 
   /**
    * 
-   * @param reason
+   * @param errorCode
    * @param key1
    * @param value1
    * @param key2
@@ -109,19 +109,19 @@ public abstract class RuleResult {
    * @param value3
    * @return 
    */
-  public static FailedResult failed(final String reason, final String key1, final Object value1,
+  public static FailedResult failed(final String errorCode, final String key1, final Object value1,
       final String key2, final Object value2, final String key3, final Object value3) {
-    return new FailedResult().addFailure(reason, key1, value1, key2, value2, key3, value3);
+    return new FailedResult().addFailure(errorCode, key1, value1, key2, value2, key3, value3);
   }
 
   /**
    * 
-   * @param reason
+   * @param errorCode
    * @param parameters
    * @return 
    */
-  public static FailedResult failed(final String reason, final Map<String, Object> parameters) {
-    return new FailedResult().addFailure(reason, parameters);
+  public static FailedResult failed(final String errorCode, final Map<String, Object> parameters) {
+    return new FailedResult().addFailure(errorCode, parameters);
   }
 
   private static final class OkResult extends RuleResult {
@@ -183,41 +183,41 @@ public abstract class RuleResult {
 
     /**
      * 
-     * @param reason
+     * @param errorCode
      * @return 
      */
-    public FailedResult addFailure(final String reason) {
-      return this.addFailure(reason, ImmutableMap.of());
+    public FailedResult addFailure(final String errorCode) {
+      return this.addFailure(errorCode, ImmutableMap.of());
     }
 
     /**
      * 
-     * @param reason
+     * @param errorCode
      * @param key
      * @param value
      * @return 
      */
-    public FailedResult addFailure(final String reason, final String key, final Object value) {
-      return this.addFailure(reason, ImmutableMap.of(key, value));
+    public FailedResult addFailure(final String errorCode, final String key, final Object value) {
+      return this.addFailure(errorCode, ImmutableMap.of(key, value));
     }
 
     /**
      * 
-     * @param reason
+     * @param errorCode
      * @param key1
      * @param value1
      * @param key2
      * @param value2
      * @return 
      */
-    public FailedResult addFailure(final String reason, final String key1, final Object value1,
+    public FailedResult addFailure(final String errorCode, final String key1, final Object value1,
         final String key2, final Object value2) {
-      return this.addFailure(reason, ImmutableMap.of(key1, value1, key2, value2));
+      return this.addFailure(errorCode, ImmutableMap.of(key1, value1, key2, value2));
     }
 
     /**
      * 
-     * @param reason
+     * @param errorCode
      * @param key1
      * @param value1
      * @param key2
@@ -226,19 +226,19 @@ public abstract class RuleResult {
      * @param value3
      * @return 
      */
-    public FailedResult addFailure(final String reason, final String key1, final Object value1,
+    public FailedResult addFailure(final String errorCode, final String key1, final Object value1,
         final String key2, final Object value2, final String key3, final Object value3) {
-      return this.addFailure(reason, ImmutableMap.of(key1, value1, key2, value2, key3, value3));
+      return this.addFailure(errorCode, ImmutableMap.of(key1, value1, key2, value2, key3, value3));
     }
 
     /**
      * 
-     * @param reason
+     * @param errorCode
      * @param parameters
      * @return 
      */
-    public FailedResult addFailure(final String reason, final Map<String, Object> parameters) {
-      this.failures.add(new Failure(reason, ImmutableMap.copyOf(parameters)));
+    public FailedResult addFailure(final String errorCode, final Map<String, Object> parameters) {
+      this.failures.add(new Failure(errorCode, ImmutableMap.copyOf(parameters)));
       return this;
     }
 

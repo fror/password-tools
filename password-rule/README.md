@@ -10,8 +10,8 @@ Rules are the core of the library. They define how the password validation must
 proceed.
 
 Rules simply implement the `Rule` interface and return a result explaining
-whether the validation succeeded or failed. If the result failed, reasons should
-be given to explain the cause of the failure.
+whether the validation succeeded or failed. If the result failed, error codes
+should be given to explain the cause of the failure.
 
 An example of `Rule` usage:
 

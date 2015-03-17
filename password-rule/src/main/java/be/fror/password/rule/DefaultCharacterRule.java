@@ -26,13 +26,13 @@ class DefaultCharacterRule implements CharacterRule {
   private final CharMatcher matcher;
   private final String characters;
   private final int numberOfCharacters;
-  private final String failureReason;
+  private final String errorCode;
 
-  DefaultCharacterRule(String characters, CharMatcher matcher, int numberOfCharacters, String failureReason) {
+  DefaultCharacterRule(String characters, CharMatcher matcher, int numberOfCharacters, String errorCode) {
     this.characters = characters;
     this.numberOfCharacters = numberOfCharacters;
     this.matcher = matcher;
-    this.failureReason = failureReason;
+    this.errorCode = errorCode;
   }
 
   @Override
@@ -50,7 +50,7 @@ class DefaultCharacterRule implements CharacterRule {
     if (this.matcher.retainFrom(password.getPassword()).length() >= this.numberOfCharacters) {
       return RuleResult.ok();
     } else {
-      return RuleResult.failed(this.failureReason,
+      return RuleResult.failed(this.errorCode,
           "characters", this.characters,
           "numberOfCharacters", this.numberOfCharacters
       );

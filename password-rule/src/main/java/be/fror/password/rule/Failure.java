@@ -30,26 +30,26 @@ import java.util.Objects;
  */
 public class Failure {
 
-  private final String reason;
+  private final String errorCode;
   private final ImmutableMap<String, Object> parameters;
 
   /**
    *
-   * @param reason
+   * @param errorCode
    * @param parameters
    */
-  public Failure(final String reason, final Map<String, Object> parameters) {
-    checkNotNull(reason, "reason must not be null");
-    this.reason = reason;
+  public Failure(final String errorCode, final Map<String, Object> parameters) {
+    checkNotNull(errorCode, "errorCode must not be null");
+    this.errorCode = errorCode;
     this.parameters = ImmutableMap.copyOf(parameters);
   }
 
   /**
    * 
-   * @return the reason of this failure
+   * @return the error code of this failure
    */
-  public String getReason() {
-    return this.reason;
+  public String getErrorCode() {
+    return this.errorCode;
   }
 
   /**
@@ -66,19 +66,19 @@ public class Failure {
       return false;
     }
     Failure other = (Failure) obj;
-    return Objects.equals(this.reason, other.reason)
+    return Objects.equals(this.errorCode, other.errorCode)
         && Objects.equals(this.parameters, other.parameters);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(Failure.class, this.reason, this.parameters);
+    return Objects.hash(Failure.class, this.errorCode, this.parameters);
   }
 
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(Failure.class)
-        .add("reason", this.reason)
+        .add("errorCode", this.errorCode)
         .add("parameters", this.parameters)
         .toString();
   }

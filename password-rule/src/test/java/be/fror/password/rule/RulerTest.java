@@ -124,14 +124,14 @@ public class RulerTest {
   @Test
   public void testGenerate() {
     Ruler ruler = Ruler.createFromRules(asList(
-        asciiLowercaseLetters(2),
-        asciiUppercaseLetters(2),
-        asciiDigits(2),
-        asciiSymbols(2)
+        asciiLowercaseLetters(1),
+        asciiUppercaseLetters(1),
+        asciiDigits(1),
+        asciiSymbols(1)
     ));
 
     for (int i = 0; i < 100; i++) { // Arbitrary number of tests
-      String password = ruler.generatePassword(25, RANDOM);
+      String password = ruler.generatePassword(20, RANDOM);
       assertThat(ruler.validatePassword(password), is(RuleResult.ok()));
     }
   }

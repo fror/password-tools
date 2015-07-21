@@ -46,8 +46,6 @@ import java.util.Random;
  */
 public class RulerTest {
 
-  private static final Random RANDOM = new Random();
-
   /**
    * Instantiates a new <tt>RulerTest</tt> instance.
    */
@@ -68,11 +66,14 @@ public class RulerTest {
   public static void tearDownClass() {
   }
 
+  private Random random;
+  
   /**
    * Hook to execute after creating this test instance and before executing a test method.
    */
   @Before
   public void setUp() {
+    this.random = new Random(0);
   }
 
   /**
@@ -130,9 +131,9 @@ public class RulerTest {
         asciiSymbols(1)
     ));
 
-    for (int i = 0; i < 100; i++) { // Arbitrary number of tests
-      String password = ruler.generatePassword(20, RANDOM);
-      assertThat(ruler.validatePassword(password), is(RuleResult.ok()));
+    for (int i = 0; i < 1_000; i++) { // Arbitrary number of tests
+      String password = ruler.generatePassword(20, random);
+      assertThat(password, ruler.validatePassword(password), is(RuleResult.ok()));
     }
   }
 

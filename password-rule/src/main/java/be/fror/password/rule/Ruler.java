@@ -15,17 +15,21 @@
  */
 package be.fror.password.rule;
 
-import static be.fror.common.function.MoreCollectors.toImmutableSet;
-import static be.fror.common.function.Suppliers.memoize;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
+import be.fror.common.function.MoreCollectors;
+import be.fror.common.function.Suppliers;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.primitives.Chars;
 
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.Random;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Supplier;
 
 import javax.annotation.concurrent.Immutable;
@@ -53,16 +57,12 @@ public final class Ruler {
   @VisibleForTesting
   final ImmutableSet<Rule> rules;
 
-  private final Supplier<ImmutableSet<CharacterRule>> characterRules;
+  private final Supplier<Generator> generator;
 
   @VisibleForTesting
   Ruler(Builder builder) {
     this.rules = builder.rules.build();
-    this.characterRules = memoize(() -> rules.stream()
-        .filter((e) -> e instanceof CharacterRule)
-        .map((e) -> (CharacterRule) e)
-        .collect(toImmutableSet())
-    );
+    this.generator = Suppliers.memoize(this::createGenerator);
   }
 
   /**
@@ -102,30 +102,68 @@ public final class Ruler {
    * ruler.
    */
   public String generatePassword(final int length, final Random random) {
-    checkArgument(length > 0, "length must greater than 0");
+    final Generator gen = this.generator.get();
+    checkArgument(length >= gen.minLength, "length (%s) must be greater than %s given the CharacterRules provided", length, gen.minLength);
     checkNotNull(random, "random must not be null");
-    final Collection<CharacterRule> charRules = this.characterRules.get();
-    checkState(charRules.size() > 0, "No CharacterRule were added to this Ruler");
-    final StringBuilder allChars = new StringBuilder();
-    final StringBuilder builder = new StringBuilder();
-    charRules.stream().forEach((rule) -> {
-      final String source = rule.getValidCharacters();
-      allChars.append(source);
-      for (int i = 0, l = rule.getNumberOfCharacters(); i < l; i++) {
-        builder.append(source.charAt(random.nextInt(source.length())));
+    return gen.generate(length, random);
+  }
+
+  private Generator createGenerator() {
+    final ImmutableSet<CharacterRule> charRules = rules.stream()
+        .filter(e -> e instanceof CharacterRule)
+        .map(e -> (CharacterRule) e)
+        .collect(MoreCollectors.toImmutableSet());
+    checkState(!charRules.isEmpty(), "No CharacterRule were added to this Ruler");
+    Set<Character> uniqueChars = new TreeSet<>();
+    int minLen = 0;
+    for (CharacterRule rule : charRules) {
+      for (char c : rule.getValidCharacters().toCharArray()) {
+        uniqueChars.add(c);
       }
-    });
-    for (int i = builder.length(); i < length; i++) {
-      builder.append(allChars.charAt(random.nextInt(allChars.length())));
+      minLen += rule.getNumberOfCharacters();
     }
-    for (int i = 0, len = builder.length() - 1; i < len; i++) {
-      // length - 1 because the last call would always be switching the last character with itself.
-      int pos = i + random.nextInt(builder.length() - i);
-      char c = builder.charAt(pos);
-      builder.setCharAt(pos, builder.charAt(i));
-      builder.setCharAt(i, c);
+    return new Generator(charRules, Chars.toArray(uniqueChars), minLen);
+  }
+
+  class Generator {
+
+    final ImmutableSet<CharacterRule> rules;
+    final char[] allChars;
+    final int minLength;
+
+    Generator(ImmutableSet<CharacterRule> rules, char[] allChars, int minLength) {
+      this.rules = rules;
+      this.allChars = allChars;
+      this.minLength = minLength;
     }
-    return builder.toString();
+
+    String generate(int length, Random random) {
+      final char[] password = new char[length];
+      int offset = 0;
+
+      // Add mandatory characters
+      for (CharacterRule rule : rules) {
+        final String source = rule.getValidCharacters();
+        for (int i = 0, l = rule.getNumberOfCharacters(); i < l; i++) {
+          password[offset++] = source.charAt(random.nextInt(source.length()));
+        }
+      }
+
+      // Add to match length
+      while (offset < length) {
+        password[offset++] = allChars[random.nextInt(allChars.length)];
+      }
+
+      // Shuffle the charaters // What? No Arrays.shuffle??
+      for (int i = password.length - 1; i > 0; i--) {
+        final int pos = random.nextInt(i + 1);
+        final char swap = password[pos];
+        password[pos] = password[i];
+        password[i] = swap;
+      }
+
+      return new String(password);
+    }
   }
 
   /**

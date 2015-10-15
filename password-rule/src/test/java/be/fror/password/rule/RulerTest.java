@@ -39,6 +39,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 /**
@@ -166,6 +167,19 @@ public class RulerTest {
       String password = ruler.generatePassword(8, random);
       assertThat(asciiLowerCase.retainFrom(password).length(), is(4));
       assertThat(asciiUpperCase.retainFrom(password).length(), is(4));
+    }
+  }
+  
+  @Test
+  public void generatePassword() {
+    Ruler ruler = Ruler.createFromRules(asList(
+        asciiLowercaseLetters(1),
+        asciiUppercaseLetters(1),
+        asciiDigits(1),
+        asciiSymbols(1)
+    ));
+    for (int i = 0; i < 20; i++) {
+      System.out.println(ruler.generatePassword(20, new SecureRandom()));
     }
   }
 }

@@ -13,31 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package be.fror.password.vault.core;
+package be.fror.password.vault.ui;
 
-import be.fror.common.io.ByteSource;
-import be.fror.password.vault.model.Vault;
-
-import org.junit.Test;
-
-import java.io.IOException;
+import com.google.inject.AbstractModule;
 
 /**
  *
  * @author Olivier Grégoire
  */
-public class Vault1FormatTest {
+public class UiModule extends AbstractModule {
 
-  @Test
-  public void testRead() throws IOException {
-    ByteSource source = ByteSource.wrap(new byte[]{ 
-      'V', 'L', 'T', '1', // Tag ("VLT1")
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // Salt
-      0, 0, 4, 0, // Iter (1024)
-    });
-
-    Vault vault = Vault1Format.INSTANCE.read(source.openStream());
-
+  @Override
+  protected void configure() {
   }
 
 }

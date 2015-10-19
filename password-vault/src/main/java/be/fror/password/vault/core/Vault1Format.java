@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PushbackInputStream;
+import java.util.Arrays;
 
 /**
  *
@@ -35,13 +36,13 @@ enum Vault1Format implements VaultFormat {
   INSTANCE;
 
   private static final String TAG = "VLT1";
+  private static final byte[] TAG_BYTES = TAG.getBytes(US_ASCII);
 
   @Override
   public boolean accept(PushbackInputStream in) throws IOException {
-    byte[] tag = new byte[4];
-    readFully(in, tag);
+    byte[] tag = readFully(in, new byte[4]);
     in.unread(tag);
-    return TAG.equals(new String(tag, US_ASCII));
+    return Arrays.equals(TAG_BYTES, tag);
   }
 
   @Override
@@ -55,7 +56,7 @@ enum Vault1Format implements VaultFormat {
 
   @Override
   public void write(OutputStream out, Vault vault) throws IOException {
-    out.write(TAG.getBytes(US_ASCII));
+    out.write(TAG_BYTES);
     out.flush();
   }
 

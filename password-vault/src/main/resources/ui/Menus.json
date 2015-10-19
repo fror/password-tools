@@ -1,0 +1,19 @@
+{
+    "bar": {
+        "file": {
+            
+        },
+        "edit": [
+            "addEntry",
+            "find",
+            "separator",
+            "addGroup",
+            "renameGroup",
+            "deleteGroup",
+            "duplicateGroup",
+            "protectEntries",
+            "separator",
+            "clearClipboard"
+        ]
+    }
+}

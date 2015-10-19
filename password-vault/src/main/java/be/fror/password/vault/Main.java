@@ -13,31 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package be.fror.password.vault.core;
+package be.fror.password.vault;
 
-import be.fror.common.io.ByteSource;
-import be.fror.password.vault.model.Vault;
+import be.fror.password.vault.io.IoModule;
+import be.fror.password.vault.ui.MainWindow;
+import be.fror.password.vault.ui.UiModule;
 
-import org.junit.Test;
-
-import java.io.IOException;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
  *
  * @author Olivier Grégoire
  */
-public class Vault1FormatTest {
+public final class Main {
 
-  @Test
-  public void testRead() throws IOException {
-    ByteSource source = ByteSource.wrap(new byte[]{ 
-      'V', 'L', 'T', '1', // Tag ("VLT1")
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // Salt
-      0, 0, 4, 0, // Iter (1024)
-    });
-
-    Vault vault = Vault1Format.INSTANCE.read(source.openStream());
-
+  private Main() {
   }
 
+  public static void main(String[] args) {
+    Injector injector = Guice.createInjector(
+        new IoModule(),
+        new UiModule()
+    );
+    
+  }
 }
